@@ -12,11 +12,11 @@
 
 void draw(void);
 void prepare(void);
-uint8_t search(char bukva, uint8_t slice);
+uint32_t search(char bukva, uint32_t slice);
 
-uint8_t buffer[BUFFER_SIZE];
-uint8_t part = 0;																						// Текущая часть символа
-uint8_t row = 0;																						// Текущий ряд символов
+uint32_t buffer[BUFFER_SIZE];
+uint32_t part = 0;																						// Текущая часть символа
+uint32_t row = 0;																						// Текущий ряд символов
 
 extern SPI_HandleTypeDef hspi1;
 
@@ -24,11 +24,11 @@ void prepare(void){																						// Функция подготовки 
 
 	//HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);															// Необходима для проверки срабатывания функции, можно отключить
 	part = 0;																							// Увеличение смещения по части символа
-	for(uint8_t i = 0; i < 100; i++){																	// Подготовка строки 1
+	for(uint32_t i = 0; i < 100; i++){																	// Подготовка строки 1
 		buffer[i] = search(screen[row][i], part);
 	}
 	part++;
-	for(uint8_t i = 0; i < 100; i++){																	// Подготовка строки 2
+	for(uint32_t i = 0; i < 100; i++){																	// Подготовка строки 2
 		buffer[i+100] = search(screen[row][i], part);
 	}
 	part++;																								// Увеличение смещения по части символа
@@ -45,13 +45,13 @@ void draw(void){																						// Функция подготовки и 
 	for(uint8_t l = 1; l < HALF_SCREEN_TIME_PIXEL_LINES; l++){											// Собственно цикл, в которой подготавливаются две строки кадра
 		while(!(DMA2->LISR & DMA_LISR_HTIF3));															// Ожидание окончания передачи строки 1
 		DMA2->LIFCR |= DMA_LIFCR_CHTIF3;																// Сброс флага
-		for(uint8_t i = 0; i < 100; i++){																// Подготовка строки 1
+		for(uint32_t i = 0; i < 100; i++){																// Подготовка строки 1
 			buffer[i] = search(screen[row][i], part);
 		}
 		part++;																							// Увеличение смещения по части символа
 		while(!(DMA2->LISR & DMA_LISR_TCIF3));															// Ожидание окончания передачи строки 2
 		DMA2->LIFCR |= DMA_LIFCR_CTCIF3;																// Сброс флага
-		for(uint8_t i = 0; i < 100; i++){																// Подготовка строки 2
+		for(uint32_t i = 0; i < 100; i++){																// Подготовка строки 2
 			buffer[i+100] = search(screen[row][i], part);
 		}
 		part++;																							// Увеличение смещения по части символа
@@ -75,8 +75,8 @@ void draw(void){																						// Функция подготовки и 
 }
 
 
-uint8_t search(char bukva, uint8_t slice){																// Функция поиска нужной части символа
-	for(uint8_t i = 0; i < 94; i++ ){																	// Перебор массива reference и сравнение принятого символа и символом массива
+uint32_t search(char bukva, uint32_t slice){																// Функция поиска нужной части символа
+	for(uint32_t i = 0; i < 94; i++ ){																	// Перебор массива reference и сравнение принятого символа и символом массива
 		if(reference[i] == bukva){
 			return font[i-1][slice];																	// Возвращает код части символа
 			break;

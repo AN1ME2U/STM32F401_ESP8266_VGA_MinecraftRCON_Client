@@ -100,8 +100,8 @@ int main(void)
   HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
   HAL_TIM_OC_Start_IT(&htim4, TIM_CHANNEL_2);
   HAL_TIM_OC_Start_IT(&htim4, TIM_CHANNEL_3);
-  for(uint8_t x = 0; x < 60; x++){
-	  for(uint8_t y = 0; y < 100; y++){
+  for(uint32_t x = 0; x < 60; x++){
+	  for(uint32_t y = 0; y < 100; y++){
 		  screen[x][y] = 'b';
 	  }
   }
