@@ -1,7 +1,7 @@
-STM32 source/.settings
-STM32 source/Debug
-STM32 source/Release
-STM32 source/Drivers
+STM32 source/.settings/
+STM32 source/Debug/
+STM32 source/Release/
+STM32 source/Drivers/
 *.cproject
 *.mxproject
 *.project
