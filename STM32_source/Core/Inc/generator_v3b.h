@@ -10,5 +10,5 @@
 
 extern void draw();
 extern void prepare();
-
+extern void color_stream();
 #endif /* INC_GENERATOR_V3B_H_ */

@@ -22,9 +22,10 @@
 #include "dma.h"
 #include "spi.h"
 #include "tim.h"
+#include "usart.h"
+#include "usb_otg.h"
 #include "gpio.h"
-#include "settings.h"
-char screen[60][100];
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -47,7 +48,8 @@ char screen[60][100];
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+volatile char screen[60][100];
+volatile uint8_t color_map[480][100];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -84,29 +86,40 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
+  for(uint32_t x = 0; x < 60; x++){
 
+	  for(uint32_t y = 0; y < 100; y++){
+		  screen[x][y] = 'b';
+	  }
+  }
+  for(uint32_t x = 0; x < 480; x++){
+
+  	  for(uint32_t y = 9; y < 79; y++){
+  		  color_map[x][y] = 0b11001010;
+  	  }
+  }
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_SPI1_Init();
-  MX_TIM1_Init();
+  MX_SPI2_Init();
   MX_TIM3_Init();
   MX_TIM4_Init();
-  HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
-  HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
-  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
-  HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
-  HAL_TIM_OC_Start_IT(&htim4, TIM_CHANNEL_2);
-  HAL_TIM_OC_Start_IT(&htim4, TIM_CHANNEL_3);
-  for(uint32_t x = 0; x < 60; x++){
-	  for(uint32_t y = 0; y < 100; y++){
-		  screen[x][y] = 'b';
-	  }
-  }
+  MX_USART1_UART_Init();
+  MX_USB_OTG_FS_HCD_Init();
   /* USER CODE BEGIN 2 */
 
+  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+  HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
+  HAL_TIM_OC_Start_IT(&htim3, TIM_CHANNEL_3);
+  HAL_TIM_OC_Start_IT(&htim4, TIM_CHANNEL_2);
+  HAL_TIM_OC_Start_IT(&htim4, TIM_CHANNEL_3);
+  HAL_TIM_OC_Start_IT(&htim4, TIM_CHANNEL_4);
+
+
+  //HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -140,10 +153,10 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLM = 12;
-  RCC_OscInitStruct.PLL.PLLN = 72;
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-  RCC_OscInitStruct.PLL.PLLQ = 4;
+  RCC_OscInitStruct.PLL.PLLM = 8;
+  RCC_OscInitStruct.PLL.PLLN = 336;
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
+  RCC_OscInitStruct.PLL.PLLQ = 7;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();

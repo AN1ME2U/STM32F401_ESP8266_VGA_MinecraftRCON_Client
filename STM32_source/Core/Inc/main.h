@@ -29,7 +29,7 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
-extern char screen[60][100];
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
