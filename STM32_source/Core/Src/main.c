@@ -48,8 +48,8 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-volatile char screen[60][100];
-volatile uint8_t color_map[480][100];
+uint8_t screen[60][100];
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -86,18 +86,13 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-  for(uint32_t x = 0; x < 60; x++){
+  for(uint8_t x = 0; x < 60; x++){
 
-	  for(uint32_t y = 0; y < 100; y++){
-		  screen[x][y] = 'b';
+	  for(uint8_t y = 9; y < 89; y++){
+		  screen[x][y] = 66;
 	  }
   }
-  for(uint32_t x = 0; x < 480; x++){
 
-  	  for(uint32_t y = 9; y < 79; y++){
-  		  color_map[x][y] = 0b11001010;
-  	  }
-  }
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */

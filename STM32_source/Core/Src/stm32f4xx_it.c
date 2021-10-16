@@ -223,13 +223,7 @@ void DMA1_Stream4_IRQHandler(void)
 void TIM3_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM3_IRQn 0 */
-	if(TIM3->SR & TIM_SR_CC3IF){
-		TIM3->SR &= ~TIM_SR_CC3IF;
-		if(TIM4->SR & TIM_SR_CC4IF){
-			TIM4->SR &= ~TIM_SR_CC4IF;
-			color_stream();
-		}
-	}
+
   /* USER CODE END TIM3_IRQn 0 */
   HAL_TIM_IRQHandler(&htim3);
   /* USER CODE BEGIN TIM3_IRQn 1 */

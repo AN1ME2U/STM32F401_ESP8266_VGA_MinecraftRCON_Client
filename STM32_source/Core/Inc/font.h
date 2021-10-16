@@ -10,7 +10,7 @@
 
 #include "settings.h"
 
-extern uint8_t font [NUM_OF_SYMBOLS] [SYMBOL_HEIGHT];
-extern char reference[NUM_OF_SYMBOLS+1];
+extern const uint8_t font [NUM_OF_SYMBOLS] [SYMBOL_HEIGHT];
+extern const char reference[NUM_OF_SYMBOLS+1];
 
 #endif /* INC_FONT_H_ */
